@@ -1,0 +1,2254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Attendance Manager</title>
+    <style>
+        :root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  /* RGB versions for opacity control */
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+  --color-slate-500-rgb: 98, 108, 113;
+  --color-red-500-rgb: 192, 21, 47;
+  --color-red-400-rgb: 255, 84, 89;
+  --color-orange-500-rgb: 168, 75, 47;
+  --color-orange-400-rgb: 230, 129, 97;
+
+  /* Background color tokens (Light Mode) */
+  --color-bg-1: rgba(59, 130, 246, 0.08);
+  --color-bg-2: rgba(245, 158, 11, 0.08);
+  --color-bg-3: rgba(34, 197, 94, 0.08);
+  --color-bg-4: rgba(239, 68, 68, 0.08);
+  --color-bg-5: rgba(147, 51, 234, 0.08);
+  --color-bg-6: rgba(249, 115, 22, 0.08);
+  --color-bg-7: rgba(236, 72, 153, 0.08);
+  --color-bg-8: rgba(6, 182, 212, 0.08);
+
+  /* Semantic Color Tokens (Light Mode) */
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-primary-active: var(--color-teal-700);
+  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-btn-primary-text: var(--color-cream-50);
+  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-error: var(--color-red-500);
+  --color-success: var(--color-teal-500);
+  --color-warning: var(--color-orange-500);
+  --color-info: var(--color-slate-500);
+  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+
+  /* Common style patterns */
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+  --status-bg-opacity: 0.15;
+  --status-border-opacity: 0.25;
+
+  /* Typography */
+  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
+    Monaco, Consolas, monospace;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --letter-spacing-tight: -0.01em;
+
+  /* Spacing */
+  --space-0: 0;
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-base: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
+    0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
+    0 4px 6px -2px rgba(0, 0, 0, 0.02);
+
+  /* Animation */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-gray-400-rgb: 119, 124, 124;
+    --color-teal-300-rgb: 50, 184, 198;
+    --color-gray-300-rgb: 167, 169, 169;
+    --color-gray-200-rgb: 245, 245, 245;
+
+    --color-bg-1: rgba(29, 78, 216, 0.15);
+    --color-bg-2: rgba(180, 83, 9, 0.15);
+    --color-bg-3: rgba(21, 128, 61, 0.15);
+    --color-bg-4: rgba(185, 28, 28, 0.15);
+    --color-bg-5: rgba(107, 33, 168, 0.15);
+    --color-bg-6: rgba(194, 65, 12, 0.15);
+    --color-bg-7: rgba(190, 24, 93, 0.15);
+    --color-bg-8: rgba(8, 145, 178, 0.15);
+
+    --color-background: var(--color-charcoal-700);
+    --color-surface: var(--color-charcoal-800);
+    --color-text: var(--color-gray-200);
+    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+    --color-primary: var(--color-teal-300);
+    --color-primary-hover: var(--color-teal-400);
+    --color-primary-active: var(--color-teal-800);
+    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+    --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+    --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-error: var(--color-red-400);
+    --color-success: var(--color-teal-300);
+    --color-warning: var(--color-orange-400);
+    --color-info: var(--color-gray-300);
+    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+    --color-btn-primary-text: var(--color-slate-900);
+    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+    --color-success-rgb: var(--color-teal-300-rgb);
+    --color-error-rgb: var(--color-red-400-rgb);
+    --color-warning-rgb: var(--color-orange-400-rgb);
+    --color-info-rgb: var(--color-gray-300-rgb);
+  }
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-6) var(--space-12);
+  border-radius: var(--radius-full);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+}
+
+.status--success {
+  background-color: rgba(var(--color-success-rgb, 33, 128, 141), var(--status-bg-opacity));
+  color: var(--color-success);
+  border: 1px solid rgba(var(--color-success-rgb, 33, 128, 141), var(--status-border-opacity));
+}
+
+.status--error {
+  background-color: rgba(var(--color-error-rgb, 192, 21, 47), var(--status-bg-opacity));
+  color: var(--color-error);
+  border: 1px solid rgba(var(--color-error-rgb, 192, 21, 47), var(--status-border-opacity));
+}
+
+.status--warning {
+  background-color: rgba(var(--color-warning-rgb, 168, 75, 47), var(--status-bg-opacity));
+  color: var(--color-warning);
+  border: 1px solid rgba(var(--color-warning-rgb, 168, 75, 47), var(--status-border-opacity));
+}
+
+.status--info {
+  background-color: rgba(var(--color-info-rgb, 98, 108, 113), var(--status-bg-opacity));
+  color: var(--color-info);
+  border: 1px solid rgba(var(--color-info-rgb, 98, 108, 113), var(--status-border-opacity));
+}
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2')
+    format('woff2');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family-base);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    line-height: var(--line-height-normal);
+    font-size: var(--font-size-base);
+}
+
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-24);
+}
+
+header {
+    background-color: var(--color-surface);
+    padding: var(--space-20) var(--space-24);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-24);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-card-border);
+}
+
+h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: var(--space-4);
+}
+
+.subtitle {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+}
+
+.view {
+    display: none;
+}
+
+.view.active {
+    display: block;
+}
+
+.card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-20);
+    margin-bottom: var(--space-16);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--duration-normal) var(--ease-standard);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-10) var(--space-20);
+    border-radius: var(--radius-base);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--duration-normal) var(--ease-standard);
+    border: none;
+    text-decoration: none;
+}
+
+.btn:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    color: var(--color-btn-primary-text);
+}
+
+.btn-primary:hover {
+    background: var(--color-primary-hover);
+}
+
+.btn-secondary {
+    background: var(--color-secondary);
+    color: var(--color-text);
+}
+
+.btn-secondary:hover {
+    background: var(--color-secondary-hover);
+}
+
+.btn-danger {
+    background: var(--color-error);
+    color: var(--color-white);
+}
+
+.btn-danger:hover {
+    opacity: 0.9;
+}
+
+.btn-small {
+    padding: var(--space-6) var(--space-12);
+    font-size: var(--font-size-sm);
+}
+
+.btn-group {
+    display: flex;
+    gap: var(--space-12);
+    flex-wrap: wrap;
+}
+
+.form-group {
+    margin-bottom: var(--space-16);
+}
+
+label {
+    display: block;
+    margin-bottom: var(--space-8);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: var(--space-10) var(--space-12);
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-base);
+    transition: border-color var(--duration-fast) var(--ease-standard);
+    font-family: var(--font-family-base);
+}
+
+input:focus,
+select:focus {
+    border-color: var(--color-primary);
+    outline: var(--focus-outline);
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-16);
+    margin-bottom: var(--space-24);
+}
+
+.summary-card {
+    background: var(--color-bg-1);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-20);
+    text-align: center;
+}
+
+.summary-number {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    margin-bottom: var(--space-8);
+}
+
+.summary-label {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+}
+
+.class-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-16);
+}
+
+.class-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-20);
+    box-shadow: var(--shadow-sm);
+}
+
+.class-card h3 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-8);
+    color: var(--color-text);
+}
+
+.class-info {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-16);
+}
+
+.student-list {
+    list-style: none;
+    margin-bottom: var(--space-16);
+}
+
+.student-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-12);
+    background: var(--color-bg-2);
+    border-radius: var(--radius-base);
+    margin-bottom: var(--space-8);
+}
+
+.student-info {
+    flex: 1;
+}
+
+.student-name {
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-4);
+}
+
+.student-roll {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.attendance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-16);
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-base);
+    margin-bottom: var(--space-12);
+}
+
+.attendance-student {
+    flex: 1;
+}
+
+.attendance-controls {
+    display: flex;
+    gap: var(--space-16);
+}
+
+.radio-group {
+    display: flex;
+    gap: var(--space-8);
+    align-items: center;
+}
+
+.radio-group input[type="radio"] {
+    width: auto;
+    margin-right: var(--space-4);
+}
+
+.radio-group label {
+    margin: 0;
+    font-weight: var(--font-weight-normal);
+}
+
+.message {
+    padding: var(--space-16);
+    border-radius: var(--radius-base);
+    margin-bottom: var(--space-16);
+    font-weight: var(--font-weight-medium);
+}
+
+.message-success {
+    background: rgba(var(--color-success-rgb), var(--status-bg-opacity));
+    color: var(--color-success);
+    border: 1px solid rgba(var(--color-success-rgb), var(--status-border-opacity));
+}
+
+.message-error {
+    background: rgba(var(--color-error-rgb), var(--status-bg-opacity));
+    color: var(--color-error);
+    border: 1px solid rgba(var(--color-error-rgb), var(--status-border-opacity));
+}
+
+.empty-state {
+    text-align: center;
+    padding: var(--space-32);
+    color: var(--color-text-secondary);
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: var(--space-16);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--space-16);
+}
+
+th, td {
+    padding: var(--space-12);
+    text-align: left;
+    border-bottom: 1px solid var(--color-card-border);
+}
+
+th {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    background: var(--color-bg-1);
+}
+
+td {
+    color: var(--color-text);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.status-present {
+    background: rgba(var(--color-success-rgb), var(--status-bg-opacity));
+    color: var(--color-success);
+    border: 1px solid rgba(var(--color-success-rgb), var(--status-border-opacity));
+}
+
+.status-absent {
+    background: rgba(var(--color-error-rgb), var(--status-bg-opacity));
+    color: var(--color-error);
+    border: 1px solid rgba(var(--color-error-rgb), var(--status-border-opacity));
+}
+
+.status-info {
+    background: rgba(var(--color-warning-rgb), var(--status-bg-opacity));
+    color: var(--color-warning);
+    border: 1px solid rgba(var(--color-warning-rgb), var(--status-border-opacity));
+}
+
+.filters {
+    background: var(--color-bg-1);
+    padding: var(--space-20);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-24);
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-16);
+    margin-bottom: var(--space-16);
+}
+
+.stats-card {
+    background: var(--color-bg-3);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-16);
+    margin-bottom: var(--space-16);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-16);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    margin-bottom: var(--space-4);
+}
+
+.stat-label {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal h2 {
+    margin-bottom: var(--space-20);
+    font-size: var(--font-size-2xl);
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        padding: var(--space-16);
+    }
+    
+    .class-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .attendance-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-12);
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .btn-group .btn {
+        width: 100%;
+    }
+}
+    </style>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Firebase Configuration Panel -->
+        <div id="firebase-config-view" class="view active">
+            <div class="card" style="max-width: 700px; margin: 0 auto;">
+                <h2 style="margin-bottom: var(--space-16);">🔥 Firebase Configuration</h2>
+                <p style="color: var(--color-text-secondary); margin-bottom: var(--space-24);">Connect to your Firebase project to enable real-time data synchronization and authentication.</p>
+                
+                <div class="form-group">
+                    <label for="firebase-config-input">Paste Your Firebase Configuration (JSON)</label>
+                    <textarea id="firebase-config-input" rows="10" style="width: 100%; padding: var(--space-12); font-family: var(--font-family-mono); font-size: var(--font-size-sm); color: var(--color-text); background-color: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-base); resize: vertical;">{
+  "apiKey": "ENTER_YOUR_API_KEY",
+  "authDomain": "your-project.firebaseapp.com",
+  "projectId": "your-project-id",
+  "storageBucket": "your-project.appspot.com",
+  "messagingSenderId": "YOUR_SENDER_ID",
+  "appId": "YOUR_APP_ID"
+}</textarea>
+                </div>
+                
+                <div id="firebase-config-message"></div>
+                
+                <div id="firebase-status" style="padding: var(--space-12); border-radius: var(--radius-base); margin-bottom: var(--space-16); display: none;"></div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="connectToFirebase()">🔌 Connect to Firebase</button>
+                    <button class="btn btn-secondary" onclick="useDemoMode()">🎮 Use Demo Mode</button>
+                </div>
+                
+                <div style="margin-top: var(--space-24); padding: var(--space-16); background: var(--color-bg-2); border-radius: var(--radius-base); font-size: var(--font-size-sm);">
+                    <h4 style="margin-bottom: var(--space-8);">📖 How to get your Firebase config:</h4>
+                    <ol style="margin-left: var(--space-20); line-height: 1.8;">
+                        <li>Go to <a href="https://console.firebase.google.com" target="_blank">Firebase Console</a></li>
+                        <li>Select your project (or create a new one)</li>
+                        <li>Click the gear icon → Project settings</li>
+                        <li>Scroll down to "Your apps" section</li>
+                        <li>Click on the web app or create one</li>
+                        <li>Copy the config object and paste above</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Authentication Views -->
+        <div id="auth-view" class="view">
+            <div class="card" style="max-width: 500px; margin: 0 auto;">
+                <h2 style="margin-bottom: var(--space-16);">🔐 Sign In</h2>
+                
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" placeholder="your@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password">
+                </div>
+                
+                <div id="auth-message"></div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="signInUser()" id="signin-btn">Sign In</button>
+                    <button class="btn btn-secondary" onclick="showView('signup-view')">Create Account</button>
+                </div>
+                
+                <div style="text-align: center; margin-top: var(--space-16);">
+                    <a href="#" onclick="showView('forgot-password-view'); return false;" style="font-size: var(--font-size-sm);">Forgot Password?</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="signup-view" class="view">
+            <div class="card" style="max-width: 500px; margin: 0 auto;">
+                <h2 style="margin-bottom: var(--space-16);">📝 Create Account</h2>
+                
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="signup-email">Email Address</label>
+                    <input type="email" id="signup-email" placeholder="your@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="signup-password">Password (min 8 characters)</label>
+                    <input type="password" id="signup-password" placeholder="Create a strong password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" placeholder="Re-enter password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="signup-role">Select Role</label>
+                    <select id="signup-role">
+                        <option value="teacher">👨‍🏫 Teacher/Admin</option>
+                        <option value="student">👨‍🎓 Student</option>
+                    </select>
+                </div>
+                
+                <div id="signup-message"></div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="signUpUser()" id="signup-btn">Create Account</button>
+                    <button class="btn btn-secondary" onclick="showView('auth-view')">← Back to Sign In</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="forgot-password-view" class="view">
+            <div class="card" style="max-width: 500px; margin: 0 auto;">
+                <h2 style="margin-bottom: var(--space-16);">🔑 Reset Password</h2>
+                <p style="color: var(--color-text-secondary); margin-bottom: var(--space-24);">Enter your email address and we'll send you a password reset link.</p>
+                
+                <div class="form-group">
+                    <label for="reset-email">Email Address</label>
+                    <input type="email" id="reset-email" placeholder="your@email.com">
+                </div>
+                
+                <div id="reset-message"></div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="resetPassword()">Send Reset Link</button>
+                    <button class="btn btn-secondary" onclick="showView('auth-view')">← Back to Sign In</button>
+                </div>
+            </div>
+        </div>
+
+        <header id="app-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>📚 Class Attendance System</h1>
+                    <p class="subtitle" id="header-subtitle">Manage classes and track student attendance efficiently</p>
+                </div>
+                <div id="header-actions" style="display: none;">
+                    <span id="current-user-badge" class="status status--info" style="margin-right: var(--space-12);"></span>
+                    <button class="btn btn-secondary btn-small" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Role Selection View -->
+        <div id="role-selection-view" class="view active">
+            <div class="card" style="max-width: 600px; margin: 0 auto; text-align: center;">
+                <h2 style="margin-bottom: var(--space-16);">Welcome to Class Attendance System</h2>
+                <p style="color: var(--color-text-secondary); margin-bottom: var(--space-32);">This application helps manage class attendance efficiently. Select your role to continue.</p>
+                
+                <div style="display: grid; gap: var(--space-16); margin-bottom: var(--space-24);">
+                    <button class="btn btn-primary" onclick="selectRole('teacher')" style="padding: var(--space-20); font-size: var(--font-size-lg);">
+                        👨‍🏫 Login as Teacher/Admin
+                    </button>
+                    <button class="btn btn-primary" onclick="selectRole('student')" style="padding: var(--space-20); font-size: var(--font-size-lg);">
+                        👨‍🎓 Login as Student
+                    </button>
+                </div>
+                
+                <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">📝 Note: This is a demo application with no real authentication required.</p>
+            </div>
+        </div>
+
+        <!-- Teacher/Admin Dashboard View -->
+        <div id="home-view" class="view active">
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-number" id="total-classes">0</div>
+                    <div class="summary-label">Total Classes</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number" id="total-students">0</div>
+                    <div class="summary-label">Total Students</div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="showView('manage-classes-view')">📋 Manage Classes</button>
+                <button class="btn btn-primary" onclick="showView('take-attendance-view')">✓ Take Attendance</button>
+                <button class="btn btn-secondary" onclick="showView('view-records-view')">📊 View All Attendance Records</button>
+            </div>
+        </div>
+
+        <!-- Student Selection View -->
+        <div id="student-selection-view" class="view">
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <h2 style="margin-bottom: var(--space-16);">Select Your Profile</h2>
+                <p style="color: var(--color-text-secondary); margin-bottom: var(--space-24);">Choose your name from the list below to view your attendance.</p>
+                
+                <div class="form-group">
+                    <label for="student-select">Select Student</label>
+                    <select id="student-select">
+                        <option value="">-- Select your name --</option>
+                    </select>
+                </div>
+                
+                <div id="student-selection-message"></div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="loginAsStudent()">Continue</button>
+                    <button class="btn btn-secondary" onclick="showView('role-selection-view'); resetApp();">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Dashboard View -->
+        <div id="student-dashboard-view" class="view">
+            <div class="card" style="margin-bottom: var(--space-24);">
+                <h2 id="student-welcome">Welcome, Student!</h2>
+                <div class="summary-grid" style="margin-top: var(--space-20);">
+                    <div class="summary-card" style="background: var(--color-bg-3);">
+                        <div class="summary-number" id="student-total-classes">0</div>
+                        <div class="summary-label">Total Classes Enrolled</div>
+                    </div>
+                    <div class="summary-card" style="background: var(--color-bg-1);">
+                        <div class="summary-number" id="student-attendance-percentage">0%</div>
+                        <div class="summary-label">Overall Attendance</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: var(--space-16);">My Classes</h3>
+                <div id="student-classes-list"></div>
+            </div>
+
+            <div class="btn-group" style="margin-top: var(--space-24);">
+                <button class="btn btn-secondary" onclick="showView('student-overall-view')">📊 View Overall Attendance</button>
+            </div>
+        </div>
+
+        <!-- Student Class Details View -->
+        <div id="student-class-details-view" class="view">
+            <div class="card">
+                <button class="btn btn-secondary btn-small" onclick="showView('student-dashboard-view')" style="margin-bottom: var(--space-16);">← Back to My Classes</button>
+                
+                <h2 id="student-class-detail-name">Class Name</h2>
+                <div id="student-class-detail-info" style="color: var(--color-text-secondary); margin-bottom: var(--space-24);"></div>
+                
+                <div class="stats-card" style="margin-bottom: var(--space-24);">
+                    <h3>Attendance Summary</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="detail-total-classes">0</div>
+                            <div class="stat-label">Total Classes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="detail-present">0</div>
+                            <div class="stat-label">Present</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="detail-absent">0</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="detail-percentage">0%</div>
+                            <div class="stat-label">Attendance %</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 style="margin-bottom: var(--space-16);">Attendance Records</h3>
+                <div id="student-attendance-records"></div>
+            </div>
+        </div>
+
+        <!-- Student Overall Attendance View -->
+        <div id="student-overall-view" class="view">
+            <div class="card">
+                <button class="btn btn-secondary btn-small" onclick="showView('student-dashboard-view')" style="margin-bottom: var(--space-16);">← Back to Dashboard</button>
+                
+                <h2>Overall Attendance Summary</h2>
+                
+                <div class="stats-card" style="margin: var(--space-24) 0;">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="overall-attendance-percentage">0%</div>
+                            <div class="stat-label">Average Attendance</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="overall-classes-attended">0</div>
+                            <div class="stat-label">Total Classes Attended</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="overall-classes-held">0</div>
+                            <div class="stat-label">Total Classes Held</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 style="margin-bottom: var(--space-16);">Class-wise Breakdown</h3>
+                <div id="student-overall-breakdown"></div>
+            </div>
+        </div>
+
+        <!-- Manage Classes View -->
+        <div id="manage-classes-view" class="view">
+            <div class="btn-group" style="margin-bottom: var(--space-24);">
+                <button class="btn btn-primary" onclick="showAddClassModal()">➕ Add New Class</button>
+                <button class="btn btn-secondary" onclick="showView('home-view')">🏠 Back to Home</button>
+            </div>
+
+            <div id="classes-container"></div>
+        </div>
+
+        <!-- Add Students View -->
+        <div id="add-students-view" class="view">
+            <div class="card">
+                <h2 id="current-class-name">Class Name</h2>
+                <p class="subtitle" style="margin-bottom: var(--space-24);">Manage students in this class</p>
+
+                <div class="form-group">
+                    <label for="student-name">Student Name</label>
+                    <input type="text" id="student-name" placeholder="Enter student name">
+                </div>
+
+                <div class="form-group">
+                    <label for="roll-number">Roll Number</label>
+                    <input type="text" id="roll-number" placeholder="Enter roll number">
+                </div>
+
+                <div id="add-student-message"></div>
+
+                <button class="btn btn-primary" onclick="addStudent()">➕ Add Student</button>
+            </div>
+
+            <div class="card" style="margin-top: var(--space-24);">
+                <h3>Current Students</h3>
+                <div id="current-students-list"></div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="showView('manage-classes-view'); renderClasses();">← Back to Classes</button>
+        </div>
+
+        <!-- Take Attendance View -->
+        <div id="take-attendance-view" class="view">
+            <div class="card">
+                <h2>Take Attendance</h2>
+                <p class="subtitle" style="margin-bottom: var(--space-24);">Select a class and mark attendance</p>
+
+                <div class="form-group">
+                    <label for="attendance-class-select">Select Class</label>
+                    <select id="attendance-class-select" onchange="loadAttendanceForClass()">
+                        <option value="">-- Select a class --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="attendance-date">
+                </div>
+
+                <div id="attendance-message"></div>
+            </div>
+
+            <div id="attendance-container"></div>
+
+            <div class="btn-group" style="margin-top: var(--space-24);">
+                <button class="btn btn-primary" id="submit-attendance-btn" onclick="submitAttendance()" style="display: none;">💾 Submit Attendance</button>
+                <button class="btn btn-secondary" onclick="showView('home-view')">🏠 Back to Home</button>
+            </div>
+        </div>
+
+        <!-- View Attendance Records View -->
+        <div id="view-records-view" class="view">
+            <div class="filters">
+                <h2>Attendance Records</h2>
+                <div class="filter-grid">
+                    <div class="form-group">
+                        <label for="filter-class">Filter by Class</label>
+                        <select id="filter-class" onchange="filterAttendanceRecords()">
+                            <option value="">All Classes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-date-from">From Date</label>
+                        <input type="date" id="filter-date-from" onchange="filterAttendanceRecords()">
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-date-to">To Date</label>
+                        <input type="date" id="filter-date-to" onchange="filterAttendanceRecords()">
+                    </div>
+                </div>
+            </div>
+
+            <div id="attendance-stats"></div>
+
+            <div class="card">
+                <div id="records-table-container"></div>
+            </div>
+
+            <div class="btn-group" style="margin-top: var(--space-24);">
+                <button class="btn btn-secondary" onclick="exportToCSV()">📥 Export to CSV</button>
+                <button class="btn btn-secondary" onclick="showView('home-view')">🏠 Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Class Modal -->
+    <div id="add-class-modal" class="modal-overlay">
+        <div class="modal">
+            <h2>Add New Class</h2>
+            
+            <div class="form-group">
+                <label for="class-name">Class Name *</label>
+                <input type="text" id="class-name" placeholder="e.g., Computer Science 101" required>
+            </div>
+
+            <div class="form-group">
+                <label for="class-subject">Subject *</label>
+                <input type="text" id="class-subject" placeholder="e.g., Introduction to Programming" required>
+            </div>
+
+            <div class="form-group">
+                <label for="class-section">Section (Optional)</label>
+                <input type="text" id="class-section" placeholder="e.g., A">
+            </div>
+
+            <div id="class-modal-message"></div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="addClass()">Add Class</button>
+                <button class="btn btn-secondary" onclick="closeAddClassModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration state
+        let firebaseApp = null;
+        let firebaseAuth = null;
+        let firebaseDb = null;
+        let isFirebaseMode = false;
+        let currentUser = null;
+        let currentUserData = null;
+
+        // Data structure stored in memory (for demo mode)
+        let appData = {
+            classes: [],
+            attendanceRecords: [],
+            students: [] // All students across all classes
+        };
+
+        let currentClassId = null;
+        let currentRole = null; // 'teacher' or 'student'
+        let currentStudent = null; // Current logged-in student
+
+        // Connect to Firebase
+        function connectToFirebase() {
+            const configInput = document.getElementById('firebase-config-input').value;
+            const messageEl = document.getElementById('firebase-config-message');
+            const statusEl = document.getElementById('firebase-status');
+            
+            try {
+                const config = JSON.parse(configInput);
+                
+                // Validate config
+                if (!config.apiKey || !config.authDomain || !config.projectId) {
+                    messageEl.innerHTML = '<div class="message message-error">Invalid Firebase configuration. Please check all required fields.</div>';
+                    return;
+                }
+                
+                // Initialize Firebase
+                firebaseApp = firebase.initializeApp(config);
+                firebaseAuth = firebase.auth();
+                firebaseDb = firebase.firestore();
+                isFirebaseMode = true;
+                
+                statusEl.innerHTML = '<span class="status status--success">✓ Connected to Firebase successfully!</span>';
+                statusEl.style.display = 'block';
+                
+                messageEl.innerHTML = '<div class="message message-success">Firebase connected! Redirecting to login...</div>';
+                
+                // Setup auth state listener
+                firebaseAuth.onAuthStateChanged(onAuthStateChanged);
+                
+                setTimeout(() => {
+                    showView('auth-view');
+                }, 1500);
+                
+            } catch (error) {
+                messageEl.innerHTML = `<div class="message message-error">Error: ${error.message}</div>`;
+                statusEl.innerHTML = '<span class="status status--error">✗ Connection failed</span>';
+                statusEl.style.display = 'block';
+            }
+        }
+
+        // Use demo mode
+        function useDemoMode() {
+            isFirebaseMode = false;
+            initializeDemoData();
+            showView('role-selection-view');
+        }
+
+        // Auth state changed handler
+        function onAuthStateChanged(user) {
+            if (user) {
+                currentUser = user;
+                loadUserData(user.uid);
+            } else {
+                currentUser = null;
+                currentUserData = null;
+                if (isFirebaseMode) {
+                    showView('auth-view');
+                }
+            }
+        }
+
+        // Load user data from Firestore
+        async function loadUserData(uid) {
+            try {
+                const userDoc = await firebaseDb.collection('users').doc(uid).get();
+                if (userDoc.exists) {
+                    currentUserData = { id: uid, ...userDoc.data() };
+                    currentRole = currentUserData.role;
+                    
+                    document.getElementById('current-user-badge').textContent = currentUserData.name || currentUserData.email;
+                    document.getElementById('header-actions').style.display = 'flex';
+                    
+                    if (currentRole === 'teacher') {
+                        document.getElementById('header-subtitle').textContent = 'Manage classes and track student attendance';
+                        loadTeacherData();
+                        showView('home-view');
+                    } else if (currentRole === 'student') {
+                        document.getElementById('header-subtitle').textContent = 'View your classes and attendance records';
+                        currentStudent = currentUserData;
+                        showStudentDashboard();
+                    }
+                } else {
+                    // User document doesn't exist
+                    showMessage('auth-message', 'User profile not found. Please contact administrator.', 'error');
+                    firebaseAuth.signOut();
+                }
+            } catch (error) {
+                showMessage('auth-message', `Error loading user data: ${error.message}`, 'error');
+            }
+        }
+
+        // Sign in user
+        async function signInUser() {
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const messageEl = document.getElementById('auth-message');
+            const btn = document.getElementById('signin-btn');
+            
+            if (!email || !password) {
+                showMessage('auth-message', 'Please enter both email and password', 'error');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = 'Signing in...';
+            
+            try {
+                await firebaseAuth.signInWithEmailAndPassword(email, password);
+                showMessage('auth-message', 'Signed in successfully!', 'success');
+            } catch (error) {
+                showMessage('auth-message', getAuthErrorMessage(error.code), 'error');
+                btn.disabled = false;
+                btn.textContent = 'Sign In';
+            }
+        }
+
+        // Sign up user
+        async function signUpUser() {
+            const name = document.getElementById('signup-name').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+            const role = document.getElementById('signup-role').value;
+            const btn = document.getElementById('signup-btn');
+            
+            // Validation
+            if (!name || !email || !password || !confirmPassword) {
+                showMessage('signup-message', 'Please fill in all fields', 'error');
+                return;
+            }
+            
+            if (password.length < 8) {
+                showMessage('signup-message', 'Password must be at least 8 characters', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage('signup-message', 'Passwords do not match', 'error');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = 'Creating account...';
+            
+            try {
+                // Create user
+                const userCredential = await firebaseAuth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Create user document in Firestore
+                await firebaseDb.collection('users').doc(user.uid).set({
+                    name: name,
+                    email: email,
+                    role: role,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                showMessage('signup-message', 'Account created successfully! Redirecting...', 'success');
+                
+                setTimeout(() => {
+                    showView('auth-view');
+                }, 2000);
+                
+            } catch (error) {
+                showMessage('signup-message', getAuthErrorMessage(error.code), 'error');
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
+            }
+        }
+
+        // Reset password
+        async function resetPassword() {
+            const email = document.getElementById('reset-email').value.trim();
+            
+            if (!email) {
+                showMessage('reset-message', 'Please enter your email address', 'error');
+                return;
+            }
+            
+            try {
+                await firebaseAuth.sendPasswordResetEmail(email);
+                showMessage('reset-message', 'Password reset link sent! Check your email.', 'success');
+                
+                setTimeout(() => {
+                    showView('auth-view');
+                }, 3000);
+                
+            } catch (error) {
+                showMessage('reset-message', getAuthErrorMessage(error.code), 'error');
+            }
+        }
+
+        // Helper to show messages
+        function showMessage(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = `<div class="message message-${type}">${message}</div>`;
+            setTimeout(() => {
+                if (type === 'success') el.innerHTML = '';
+            }, 5000);
+        }
+
+        // Get user-friendly auth error messages
+        function getAuthErrorMessage(errorCode) {
+            const errors = {
+                'auth/email-already-in-use': 'This email is already registered',
+                'auth/invalid-email': 'Invalid email address',
+                'auth/operation-not-allowed': 'Operation not allowed',
+                'auth/weak-password': 'Password is too weak',
+                'auth/user-disabled': 'This account has been disabled',
+                'auth/user-not-found': 'No account found with this email',
+                'auth/wrong-password': 'Incorrect password',
+                'auth/too-many-requests': 'Too many attempts. Please try again later',
+                'auth/network-request-failed': 'Network error. Check your connection'
+            };
+            return errors[errorCode] || `Error: ${errorCode}`;
+        }
+
+        // Load teacher data from Firestore
+        async function loadTeacherData() {
+            if (!isFirebaseMode) return;
+            
+            try {
+                // Listen to classes collection
+                firebaseDb.collection('classes')
+                    .where('teacherId', '==', currentUser.uid)
+                    .onSnapshot(snapshot => {
+                        appData.classes = snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            ...doc.data()
+                        }));
+                        updateDashboard();
+                        renderClasses();
+                    });
+                
+                // Listen to attendance records
+                firebaseDb.collection('attendance')
+                    .where('teacherId', '==', currentUser.uid)
+                    .onSnapshot(snapshot => {
+                        appData.attendanceRecords = snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            ...doc.data()
+                        }));
+                        filterAttendanceRecords();
+                    });
+                    
+            } catch (error) {
+                console.error('Error loading teacher data:', error);
+            }
+        }
+
+        // Initialize app with sample data (Demo Mode)
+        function initializeDemoData() {
+            // Add sample students data
+            appData.students = [
+                { id: "s001", name: "Rahul Sharma", rollNumber: "CS001", email: "rahul@student.com" },
+                { id: "s002", name: "Priya Patel", rollNumber: "CS002", email: "priya@student.com" },
+                { id: "s003", name: "Amit Kumar", rollNumber: "CS003", email: "amit@student.com" },
+                { id: "s004", name: "Sneha Reddy", rollNumber: "DS001", email: "sneha@student.com" },
+                { id: "s005", name: "Vikram Singh", rollNumber: "DS002", email: "vikram@student.com" }
+            ];
+
+            // Add sample data
+            appData.classes = [
+                {
+                    id: "1636123456789",
+                    name: "Computer Science 101",
+                    subject: "Introduction to Programming",
+                    section: "A",
+                    schedule: "Monday, Wednesday, Friday - 10:00 AM",
+                    students: [
+                        { id: "s001", name: "Rahul Sharma", rollNumber: "CS001" },
+                        { id: "s002", name: "Priya Patel", rollNumber: "CS002" },
+                        { id: "s003", name: "Amit Kumar", rollNumber: "CS003" }
+                    ]
+                },
+                {
+                    id: "1636123456793",
+                    name: "Data Structures",
+                    subject: "Advanced Programming",
+                    section: "B",
+                    schedule: "Tuesday, Thursday - 2:00 PM",
+                    students: [
+                        { id: "s002", name: "Priya Patel", rollNumber: "CS002" },
+                        { id: "s004", name: "Sneha Reddy", rollNumber: "DS001" },
+                        { id: "s005", name: "Vikram Singh", rollNumber: "DS002" }
+                    ]
+                }
+            ];
+
+            appData.attendanceRecords = [
+                {
+                    id: "1636123456800",
+                    classId: "1636123456789",
+                    className: "Computer Science 101",
+                    date: "2025-11-10",
+                    records: [
+                        { studentId: "s001", studentName: "Rahul Sharma", rollNumber: "CS001", status: "Present" },
+                        { studentId: "s002", studentName: "Priya Patel", rollNumber: "CS002", status: "Present" },
+                        { studentId: "s003", studentName: "Amit Kumar", rollNumber: "CS003", status: "Absent" }
+                    ]
+                }
+            ];
+
+            setTodayDate();
+            updateDashboard();
+            loadStudentSelect();
+        }
+
+        // Role selection
+        function selectRole(role) {
+            currentRole = role;
+            if (role === 'teacher') {
+                showTeacherDashboard();
+            } else if (role === 'student') {
+                showView('student-selection-view');
+            }
+        }
+
+        // Show teacher dashboard
+        function showTeacherDashboard() {
+            document.getElementById('current-user-badge').textContent = 'Teacher/Admin';
+            document.getElementById('header-actions').style.display = 'flex';
+            document.getElementById('header-subtitle').textContent = 'Manage classes and track student attendance';
+            showView('home-view');
+        }
+
+        // Load student select dropdown
+        function loadStudentSelect() {
+            const select = document.getElementById('student-select');
+            const allStudents = appData.students;
+            select.innerHTML = '<option value="">-- Select your name --</option>' +
+                allStudents.map(student => `<option value="${student.id}">${student.name} (${student.rollNumber})</option>`).join('');
+        }
+
+        // Login as student
+        function loginAsStudent() {
+            const studentId = document.getElementById('student-select').value;
+            const messageEl = document.getElementById('student-selection-message');
+            
+            if (!studentId) {
+                messageEl.innerHTML = '<div class="message message-error">Please select a student</div>';
+                return;
+            }
+            
+            currentStudent = appData.students.find(s => s.id === studentId);
+            if (!currentStudent) {
+                messageEl.innerHTML = '<div class="message message-error">Student not found</div>';
+                return;
+            }
+            
+            document.getElementById('current-user-badge').textContent = currentStudent.name;
+            document.getElementById('header-actions').style.display = 'flex';
+            document.getElementById('header-subtitle').textContent = 'View your classes and attendance records';
+            
+            showStudentDashboard();
+        }
+
+        // Show student dashboard
+        function showStudentDashboard() {
+            document.getElementById('student-welcome').textContent = `Welcome, ${currentStudent.name}!`;
+            
+            // Get enrolled classes
+            const enrolledClasses = appData.classes.filter(cls => 
+                cls.students.some(s => s.id === currentStudent.id)
+            );
+            
+            document.getElementById('student-total-classes').textContent = enrolledClasses.length;
+            
+            // Calculate overall attendance
+            const overallStats = calculateOverallAttendance();
+            document.getElementById('student-attendance-percentage').textContent = overallStats.percentage + '%';
+            
+            // Display classes
+            const container = document.getElementById('student-classes-list');
+            if (enrolledClasses.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>You are not enrolled in any classes yet.</p></div>';
+            } else {
+                container.innerHTML = enrolledClasses.map(cls => {
+                    const classStats = calculateClassAttendance(cls.id);
+                    const percentage = classStats.percentage;
+                    let colorClass = '';
+                    if (percentage >= 75) colorClass = 'status-present';
+                    else if (percentage >= 60) colorClass = 'status-badge';
+                    else colorClass = 'status-absent';
+                    
+                    return `
+                        <div class="class-card" style="margin-bottom: var(--space-16);">
+                            <h4 style="margin-bottom: var(--space-8);">${cls.name}</h4>
+                            <div style="color: var(--color-text-secondary); font-size: var(--font-size-sm); margin-bottom: var(--space-12);">
+                                <div>📖 ${cls.subject}</div>
+                                ${cls.section ? `<div>🏫 Section: ${cls.section}</div>` : ''}
+                                ${cls.schedule ? `<div>🕐 ${cls.schedule}</div>` : ''}
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-12);">
+                                <div>
+                                    <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Attendance</div>
+                                    <div style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-primary);">${classStats.present} / ${classStats.total}</div>
+                                </div>
+                                <span class="status-badge ${colorClass}">${percentage}%</span>
+                            </div>
+                            <button class="btn btn-secondary btn-small" onclick="viewClassDetails('${cls.id}')">View Details</button>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            showView('student-dashboard-view');
+        }
+
+        // Calculate attendance for a specific class
+        function calculateClassAttendance(classId) {
+            const classRecords = appData.attendanceRecords.filter(record => record.classId === classId);
+            let present = 0;
+            let total = 0;
+            
+            classRecords.forEach(record => {
+                const studentRecord = record.records.find(r => r.studentId === currentStudent.id);
+                if (studentRecord) {
+                    total++;
+                    if (studentRecord.status === 'Present') {
+                        present++;
+                    }
+                }
+            });
+            
+            const percentage = total > 0 ? Math.round((present / total) * 100) : 0;
+            return { present, total, absent: total - present, percentage };
+        }
+
+        // Calculate overall attendance across all classes
+        function calculateOverallAttendance() {
+            const enrolledClasses = appData.classes.filter(cls => 
+                cls.students.some(s => s.id === currentStudent.id)
+            );
+            
+            let totalPresent = 0;
+            let totalClasses = 0;
+            
+            enrolledClasses.forEach(cls => {
+                const stats = calculateClassAttendance(cls.id);
+                totalPresent += stats.present;
+                totalClasses += stats.total;
+            });
+            
+            const percentage = totalClasses > 0 ? Math.round((totalPresent / totalClasses) * 100) : 0;
+            return { present: totalPresent, total: totalClasses, percentage };
+        }
+
+        // View class details for student
+        function viewClassDetails(classId) {
+            const cls = appData.classes.find(c => c.id === classId);
+            if (!cls) return;
+            
+            document.getElementById('student-class-detail-name').textContent = cls.name;
+            
+            let infoHtml = `<div>📖 ${cls.subject}</div>`;
+            if (cls.section) infoHtml += `<div>🏫 Section: ${cls.section}</div>`;
+            if (cls.schedule) infoHtml += `<div>🕐 ${cls.schedule}</div>`;
+            document.getElementById('student-class-detail-info').innerHTML = infoHtml;
+            
+            const stats = calculateClassAttendance(classId);
+            document.getElementById('detail-total-classes').textContent = stats.total;
+            document.getElementById('detail-present').textContent = stats.present;
+            document.getElementById('detail-absent').textContent = stats.absent;
+            document.getElementById('detail-percentage').textContent = stats.percentage + '%';
+            
+            // Display attendance records
+            const classRecords = appData.attendanceRecords.filter(record => record.classId === classId);
+            const recordsContainer = document.getElementById('student-attendance-records');
+            
+            if (classRecords.length === 0) {
+                recordsContainer.innerHTML = '<div class="empty-state"><p>No attendance records yet.</p></div>';
+            } else {
+                recordsContainer.innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${classRecords.map(record => {
+                                const studentRecord = record.records.find(r => r.studentId === currentStudent.id);
+                                if (!studentRecord) return '';
+                                return `
+                                    <tr>
+                                        <td>${record.date}</td>
+                                        <td><span class="status-badge status-${studentRecord.status.toLowerCase()}">${studentRecord.status}</span></td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+            
+            showView('student-class-details-view');
+        }
+
+        // Show overall attendance view
+        function showOverallAttendance() {
+            const enrolledClasses = appData.classes.filter(cls => 
+                cls.students.some(s => s.id === currentStudent.id)
+            );
+            
+            const overallStats = calculateOverallAttendance();
+            document.getElementById('overall-attendance-percentage').textContent = overallStats.percentage + '%';
+            document.getElementById('overall-classes-attended').textContent = overallStats.present;
+            document.getElementById('overall-classes-held').textContent = overallStats.total;
+            
+            const container = document.getElementById('student-overall-breakdown');
+            if (enrolledClasses.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No classes found.</p></div>';
+            } else {
+                container.innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Present</th>
+                                <th>Total</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${enrolledClasses.map(cls => {
+                                const stats = calculateClassAttendance(cls.id);
+                                return `
+                                    <tr>
+                                        <td>${cls.name}</td>
+                                        <td>${stats.present}</td>
+                                        <td>${stats.total}</td>
+                                        <td><span class="status-badge status-${stats.percentage >= 75 ? 'present' : stats.percentage >= 60 ? 'info' : 'absent'}">${stats.percentage}%</span></td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+            
+            showView('student-overall-view');
+        }
+
+        // Logout function
+        async function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                try {
+                    if (isFirebaseMode) {
+                        await firebaseAuth.signOut();
+                    }
+                    currentRole = null;
+                    currentStudent = null;
+                    currentUser = null;
+                    currentUserData = null;
+                    document.getElementById('header-actions').style.display = 'none';
+                    document.getElementById('header-subtitle').textContent = 'Manage classes and track student attendance efficiently';
+                    
+                    if (isFirebaseMode) {
+                        showView('auth-view');
+                    } else {
+                        showView('role-selection-view');
+                    }
+                } catch (error) {
+                    alert(`Error logging out: ${error.message}`);
+                }
+            }
+        }
+
+        // Reset app
+        function resetApp() {
+            currentRole = null;
+            currentStudent = null;
+            document.getElementById('header-actions').style.display = 'none';
+        }
+
+        // Set today's date
+        function setTodayDate() {
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('attendance-date');
+            if (dateInput) {
+                dateInput.value = today;
+            }
+        }
+
+        // Generate unique ID
+        function generateId() {
+            return Date.now().toString() + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Show/hide views (modified for role-based access)
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+            });
+            document.getElementById(viewId).classList.add('active');
+
+            if (viewId === 'home-view') {
+                updateDashboard();
+            } else if (viewId === 'manage-classes-view') {
+                renderClasses();
+            } else if (viewId === 'take-attendance-view') {
+                loadAttendanceClassSelect();
+                setTodayDate();
+            } else if (viewId === 'view-records-view') {
+                loadRecordsFilters();
+                filterAttendanceRecords();
+            }
+        }
+
+        // Update dashboard statistics
+        function updateDashboard() {
+            const totalClasses = appData.classes.length;
+            const totalStudents = appData.classes.reduce((sum, cls) => sum + cls.students.length, 0);
+
+            document.getElementById('total-classes').textContent = totalClasses;
+            document.getElementById('total-students').textContent = totalStudents;
+        }
+
+        // Show/hide add class modal
+        function showAddClassModal() {
+            document.getElementById('add-class-modal').classList.add('active');
+            document.getElementById('class-name').value = '';
+            document.getElementById('class-subject').value = '';
+            document.getElementById('class-section').value = '';
+            document.getElementById('class-modal-message').innerHTML = '';
+        }
+
+        function closeAddClassModal() {
+            document.getElementById('add-class-modal').classList.remove('active');
+        }
+
+        // Add new class
+        async function addClass() {
+            const name = document.getElementById('class-name').value.trim();
+            const subject = document.getElementById('class-subject').value.trim();
+            const section = document.getElementById('class-section').value.trim();
+            const messageEl = document.getElementById('class-modal-message');
+
+            if (!name || !subject) {
+                messageEl.innerHTML = '<div class="message message-error">Please fill in all required fields</div>';
+                return;
+            }
+
+            const newClass = {
+                name: name,
+                subject: subject,
+                section: section,
+                students: [],
+                teacherId: isFirebaseMode ? currentUser.uid : 'demo-teacher',
+                teacherName: isFirebaseMode ? currentUserData.name : 'Demo Teacher',
+                createdAt: isFirebaseMode ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()
+            };
+
+            try {
+                if (isFirebaseMode) {
+                    await firebaseDb.collection('classes').add(newClass);
+                } else {
+                    newClass.id = generateId();
+                    appData.classes.push(newClass);
+                }
+                
+                messageEl.innerHTML = '<div class="message message-success">Class added successfully!</div>';
+
+                setTimeout(() => {
+                    closeAddClassModal();
+                    showView('manage-classes-view');
+                }, 1000);
+            } catch (error) {
+                messageEl.innerHTML = `<div class="message message-error">Error: ${error.message}</div>`;
+            }
+        }
+
+        // Render classes list
+        function renderClasses() {
+            const container = document.getElementById('classes-container');
+
+            if (appData.classes.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📚</div>
+                        <p>No classes yet. Add your first class!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '<div class="class-grid">' + appData.classes.map(cls => `
+                <div class="class-card">
+                    <h3>${cls.name}</h3>
+                    <div class="class-info">
+                        <div>📖 ${cls.subject}</div>
+                        ${cls.section ? `<div>🏫 Section: ${cls.section}</div>` : ''}
+                        <div>👥 ${cls.students.length} student${cls.students.length !== 1 ? 's' : ''}</div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary btn-small" onclick="openAddStudents('${cls.id}')">➕ Add Students</button>
+                        <button class="btn btn-secondary btn-small" onclick="viewStudents('${cls.id}')">👁 View Students</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteClass('${cls.id}')">🗑 Delete</button>
+                    </div>
+                </div>
+            `).join('') + '</div>';
+        }
+
+        // Delete class
+        async function deleteClass(classId) {
+            if (confirm('Are you sure you want to delete this class? This will also delete all associated attendance records.')) {
+                try {
+                    if (isFirebaseMode) {
+                        await firebaseDb.collection('classes').doc(classId).delete();
+                        // Delete associated attendance records
+                        const attendanceSnapshot = await firebaseDb.collection('attendance')
+                            .where('classId', '==', classId).get();
+                        attendanceSnapshot.forEach(async doc => {
+                            await doc.ref.delete();
+                        });
+                    } else {
+                        appData.classes = appData.classes.filter(cls => cls.id !== classId);
+                        appData.attendanceRecords = appData.attendanceRecords.filter(record => record.classId !== classId);
+                        renderClasses();
+                    }
+                } catch (error) {
+                    alert(`Error deleting class: ${error.message}`);
+                }
+            }
+        }
+
+        // Open add students view
+        function openAddStudents(classId) {
+            currentClassId = classId;
+            const cls = appData.classes.find(c => c.id === classId);
+            if (cls) {
+                document.getElementById('current-class-name').textContent = cls.name;
+                renderCurrentStudents();
+                showView('add-students-view');
+            }
+        }
+
+        // View students (same as add students)
+        function viewStudents(classId) {
+            openAddStudents(classId);
+        }
+
+        // Render current students list
+        function renderCurrentStudents() {
+            const cls = appData.classes.find(c => c.id === currentClassId);
+            const container = document.getElementById('current-students-list');
+
+            if (!cls || cls.students.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No students in this class yet.</p></div>';
+                return;
+            }
+
+            container.innerHTML = '<ul class="student-list">' + cls.students.map(student => `
+                <li class="student-item">
+                    <div class="student-info">
+                        <div class="student-name">${student.name}</div>
+                        <div class="student-roll">Roll: ${student.rollNumber}</div>
+                    </div>
+                    <button class="btn btn-danger btn-small" onclick="removeStudent('${student.id}')">Remove</button>
+                </li>
+            `).join('') + '</ul>';
+        }
+
+        // Add student to class
+        async function addStudent() {
+            const name = document.getElementById('student-name').value.trim();
+            const rollNumber = document.getElementById('roll-number').value.trim();
+            const messageEl = document.getElementById('add-student-message');
+
+            if (!name || !rollNumber) {
+                messageEl.innerHTML = '<div class="message message-error">Please fill in all fields</div>';
+                return;
+            }
+
+            const cls = appData.classes.find(c => c.id === currentClassId);
+            if (!cls) {
+                messageEl.innerHTML = '<div class="message message-error">Class not found</div>';
+                return;
+            }
+
+            // Check for duplicate roll number
+            if (cls.students.some(s => s.rollNumber === rollNumber)) {
+                messageEl.innerHTML = '<div class="message message-error">Roll number already exists in this class</div>';
+                return;
+            }
+
+            const newStudent = {
+                id: generateId(),
+                name: name,
+                rollNumber: rollNumber
+            };
+
+            try {
+                if (isFirebaseMode) {
+                    const updatedStudents = [...cls.students, newStudent];
+                    await firebaseDb.collection('classes').doc(currentClassId).update({
+                        students: updatedStudents
+                    });
+                } else {
+                    cls.students.push(newStudent);
+                    renderCurrentStudents();
+                }
+                
+                messageEl.innerHTML = '<div class="message message-success">Student added successfully!</div>';
+                document.getElementById('student-name').value = '';
+                document.getElementById('roll-number').value = '';
+
+                setTimeout(() => {
+                    messageEl.innerHTML = '';
+                }, 2000);
+            } catch (error) {
+                messageEl.innerHTML = `<div class="message message-error">Error: ${error.message}</div>`;
+            }
+        }
+
+        // Remove student from class
+        async function removeStudent(studentId) {
+            if (confirm('Are you sure you want to remove this student?')) {
+                const cls = appData.classes.find(c => c.id === currentClassId);
+                if (cls) {
+                    try {
+                        const updatedStudents = cls.students.filter(s => s.id !== studentId);
+                        if (isFirebaseMode) {
+                            await firebaseDb.collection('classes').doc(currentClassId).update({
+                                students: updatedStudents
+                            });
+                        } else {
+                            cls.students = updatedStudents;
+                            renderCurrentStudents();
+                        }
+                    } catch (error) {
+                        alert(`Error removing student: ${error.message}`);
+                    }
+                }
+            }
+        }
+
+        // Load class select for attendance
+        function loadAttendanceClassSelect() {
+            const select = document.getElementById('attendance-class-select');
+            select.innerHTML = '<option value="">-- Select a class --</option>' +
+                appData.classes.map(cls => `<option value="${cls.id}">${cls.name}</option>`).join('');
+        }
+
+        // Load attendance for selected class
+        function loadAttendanceForClass() {
+            const classId = document.getElementById('attendance-class-select').value;
+            const container = document.getElementById('attendance-container');
+            const submitBtn = document.getElementById('submit-attendance-btn');
+
+            if (!classId) {
+                container.innerHTML = '';
+                submitBtn.style.display = 'none';
+                return;
+            }
+
+            const cls = appData.classes.find(c => c.id === classId);
+            if (!cls || cls.students.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No students in this class.</p></div>';
+                submitBtn.style.display = 'none';
+                return;
+            }
+
+            container.innerHTML = '<div class="card"><h3>Mark Attendance</h3>' +
+                cls.students.map(student => `
+                    <div class="attendance-row">
+                        <div class="attendance-student">
+                            <div class="student-name">${student.name}</div>
+                            <div class="student-roll">Roll: ${student.rollNumber}</div>
+                        </div>
+                        <div class="attendance-controls">
+                            <div class="radio-group">
+                                <input type="radio" id="present-${student.id}" name="attendance-${student.id}" value="Present" checked>
+                                <label for="present-${student.id}">Present</label>
+                            </div>
+                            <div class="radio-group">
+                                <input type="radio" id="absent-${student.id}" name="attendance-${student.id}" value="Absent">
+                                <label for="absent-${student.id}">Absent</label>
+                            </div>
+                        </div>
+                    </div>
+                `).join('') + '</div>';
+
+            submitBtn.style.display = 'inline-flex';
+        }
+
+        // Submit attendance
+        async function submitAttendance() {
+            const classId = document.getElementById('attendance-class-select').value;
+            const date = document.getElementById('attendance-date').value;
+            const messageEl = document.getElementById('attendance-message');
+
+            if (!classId) {
+                messageEl.innerHTML = '<div class="message message-error">Please select a class</div>';
+                return;
+            }
+
+            if (!date) {
+                messageEl.innerHTML = '<div class="message message-error">Please select a date</div>';
+                return;
+            }
+
+            const cls = appData.classes.find(c => c.id === classId);
+            if (!cls) {
+                messageEl.innerHTML = '<div class="message message-error">Class not found</div>';
+                return;
+            }
+
+            const records = cls.students.map(student => {
+                const status = document.querySelector(`input[name="attendance-${student.id}"]:checked`).value;
+                return {
+                    studentId: student.id,
+                    studentName: student.name,
+                    rollNumber: student.rollNumber,
+                    status: status
+                };
+            });
+
+            const attendanceRecord = {
+                classId: cls.id,
+                className: cls.name,
+                date: date,
+                records: records,
+                teacherId: isFirebaseMode ? currentUser.uid : 'demo-teacher',
+                createdAt: isFirebaseMode ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()
+            };
+
+            try {
+                if (isFirebaseMode) {
+                    await firebaseDb.collection('attendance').add(attendanceRecord);
+                } else {
+                    attendanceRecord.id = generateId();
+                    appData.attendanceRecords.push(attendanceRecord);
+                }
+                
+                messageEl.innerHTML = '<div class="message message-success">✓ Attendance submitted successfully!</div>';
+
+                // Reset form
+                setTimeout(() => {
+                    document.getElementById('attendance-class-select').value = '';
+                    document.getElementById('attendance-container').innerHTML = '';
+                    document.getElementById('submit-attendance-btn').style.display = 'none';
+                    messageEl.innerHTML = '';
+                }, 2000);
+            } catch (error) {
+                messageEl.innerHTML = `<div class="message message-error">Error: ${error.message}</div>`;
+            }
+        }
+
+        // Load filters for attendance records
+        function loadRecordsFilters() {
+            const classSelect = document.getElementById('filter-class');
+            classSelect.innerHTML = '<option value="">All Classes</option>' +
+                appData.classes.map(cls => `<option value="${cls.id}">${cls.name}</option>`).join('');
+        }
+
+        // Filter and display attendance records
+        function filterAttendanceRecords() {
+            const classId = document.getElementById('filter-class').value;
+            const dateFrom = document.getElementById('filter-date-from').value;
+            const dateTo = document.getElementById('filter-date-to').value;
+
+            let filteredRecords = appData.attendanceRecords;
+
+            if (classId) {
+                filteredRecords = filteredRecords.filter(record => record.classId === classId);
+            }
+
+            if (dateFrom) {
+                filteredRecords = filteredRecords.filter(record => record.date >= dateFrom);
+            }
+
+            if (dateTo) {
+                filteredRecords = filteredRecords.filter(record => record.date <= dateTo);
+            }
+
+            displayAttendanceRecords(filteredRecords);
+            displayAttendanceStats(filteredRecords);
+        }
+
+        // Display attendance records in table
+        function displayAttendanceRecords(records) {
+            const container = document.getElementById('records-table-container');
+
+            if (records.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No attendance records found.</p></div>';
+                return;
+            }
+
+            const allRecords = [];
+            records.forEach(record => {
+                record.records.forEach(studentRecord => {
+                    allRecords.push({
+                        date: record.date,
+                        className: record.className,
+                        studentName: studentRecord.studentName,
+                        rollNumber: studentRecord.rollNumber,
+                        status: studentRecord.status
+                    });
+                });
+            });
+
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Class</th>
+                            <th>Student Name</th>
+                            <th>Roll Number</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${allRecords.map(record => `
+                            <tr>
+                                <td>${record.date}</td>
+                                <td>${record.className}</td>
+                                <td>${record.studentName}</td>
+                                <td>${record.rollNumber}</td>
+                                <td><span class="status-badge status-${record.status.toLowerCase()}">${record.status}</span></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Display attendance statistics
+        function displayAttendanceStats(records) {
+            const container = document.getElementById('attendance-stats');
+
+            if (records.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let totalPresent = 0;
+            let totalAbsent = 0;
+
+            records.forEach(record => {
+                record.records.forEach(studentRecord => {
+                    if (studentRecord.status === 'Present') {
+                        totalPresent++;
+                    } else {
+                        totalAbsent++;
+                    }
+                });
+            });
+
+            const totalClasses = records.length;
+            const totalRecords = totalPresent + totalAbsent;
+            const attendancePercentage = totalRecords > 0 ? ((totalPresent / totalRecords) * 100).toFixed(1) : 0;
+
+            container.innerHTML = `
+                <div class="stats-card">
+                    <h3>Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">${totalClasses}</div>
+                            <div class="stat-label">Classes Held</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${totalPresent}</div>
+                            <div class="stat-label">Total Present</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${totalAbsent}</div>
+                            <div class="stat-label">Total Absent</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${attendancePercentage}%</div>
+                            <div class="stat-label">Attendance Rate</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            const classId = document.getElementById('filter-class').value;
+            const dateFrom = document.getElementById('filter-date-from').value;
+            const dateTo = document.getElementById('filter-date-to').value;
+
+            let filteredRecords = appData.attendanceRecords;
+
+            if (classId) {
+                filteredRecords = filteredRecords.filter(record => record.classId === classId);
+            }
+
+            if (dateFrom) {
+                filteredRecords = filteredRecords.filter(record => record.date >= dateFrom);
+            }
+
+            if (dateTo) {
+                filteredRecords = filteredRecords.filter(record => record.date <= dateTo);
+            }
+
+            if (filteredRecords.length === 0) {
+                alert('No records to export');
+                return;
+            }
+
+            let csv = 'Date,Class,Student Name,Roll Number,Status\n';
+
+            filteredRecords.forEach(record => {
+                record.records.forEach(studentRecord => {
+                    csv += `${record.date},${record.className},${studentRecord.studentName},${studentRecord.rollNumber},${studentRecord.status}\n`;
+                });
+            });
+
+            // Show CSV in alert (simulating download)
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'attendance_records.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Initialize app on load
+        window.onload = function() {
+            // Show Firebase config view by default
+            showView('firebase-config-view');
+        };
+    </script>
+</body>
+</html>
